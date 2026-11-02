@@ -31,13 +31,15 @@ body { margin: 0; min-height: 100vh; display: grid; place-items: center; backgro
 // يجيب الواجهة من Apps Script ويشغّلها هنا (بدون شريط Google ومع أيقونة التطبيق)
 (function () {
   var KEY = 'kk_ui', API = window.KK_API;
-  var HEAD = '<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#1c5aa6">' +
+  var HEAD = '<title>حضور خيرات الخليج</title><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#1c5aa6">' +
     '<link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">' +
     '<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="حضور KKETCO">' +
     '<script src="config.js"><\/script><script src="bridge.js"><\/script>';
   function get() { try { return localStorage.getItem(KEY) || ''; } catch (e) { return ''; } }
   function put(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
   function boot(html) {
+    // document.open ما يشتغل والصفحة بعدها تنقرا، فننتظر لحد ما تخلص
+    if (document.readyState === 'loading') return document.addEventListener('DOMContentLoaded', function () { boot(html); });
     html = html.replace(/<base[^>]*>/i, '').replace(/<head[^>]*>/i, function (m) { return m + HEAD; });
     document.open(); document.write(html); document.close();
   }
