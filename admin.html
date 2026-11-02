@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>لوحة المدراء - حضور خيرات الخليج</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#1c5aa6">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3f8fc;--card:#fff;--ink:#12233a;--mute:#566a80;--line:#d3e3f1;--in:#1c5aa6;--sky:#5bbbed;
+  --ok:#15803d;--okbg:#e7f7ec;--warn:#a16207;--warnbg:#fdf3d7;--err:#b91c1c;--errbg:#fdecec;--idle:#566a80;--idlebg:#eaf0f6}
+@media (prefers-color-scheme:dark){:root{--bg:#0c1624;--card:#13243a;--ink:#eaf2fa;--mute:#9db3c8;--line:#24405e;--in:#5bbbed;
+  --ok:#4ade80;--okbg:#10301f;--warn:#facc15;--warnbg:#3a3112;--err:#f87171;--errbg:#3a1616;--idle:#9db3c8;--idlebg:#1b3049}.logo{filter:brightness(0) invert(1)}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans Arabic",Tahoma,Arial,sans-serif;line-height:1.6;min-height:100vh}
+main{max-width:960px;margin:0 auto;padding:18px max(16px,env(safe-area-inset-right)) 48px max(16px,env(safe-area-inset-left))}
+.top{display:flex;align-items:center;gap:12px;padding:4px 0 12px;border-bottom:3px solid var(--sky);flex-wrap:wrap}
+.logo{width:96px;height:auto;flex:none}
+.co{font-weight:700;line-height:1.4;flex:1;min-width:180px}
+.co small{display:block;font-weight:400;color:var(--mute);font-size:.8rem}
+.hide{display:none!important}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:16px}
+h2{margin:0 0 4px;font-size:1.1rem}
+.mute{color:var(--mute);font-size:.88rem}
+label{display:block;font-size:.85rem;color:var(--mute);margin-top:10px}
+select,input,textarea{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:4px}
+.btn{font:inherit;font-weight:700;border:0;border-radius:10px;padding:10px 18px;background:var(--in);color:#fff;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--in);border:1px solid var(--line)}
+.btn.small{padding:6px 12px;font-size:.85rem}
+.btn.red{background:var(--err)}
+.btn[disabled]{opacity:.5;cursor:wait}
+:focus-visible{outline:2px solid var(--sky);outline-offset:2px}
+.msg{margin-top:12px;padding:10px 12px;border-radius:10px;font-size:.92rem}
+.msg:empty{display:none}
+.msg.ok{background:var(--okbg);color:var(--ok)}.msg.bad{background:var(--errbg);color:var(--err)}
+.tabs{display:flex;gap:6px;margin-top:16px;flex-wrap:wrap}
+.tabs button{font:inherit;font-weight:600;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 16px;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--in);color:#fff;border-color:transparent}
+.badge{display:inline-block;min-width:20px;padding:0 6px;border-radius:999px;background:var(--err);color:#fff;font-size:.75rem;margin-inline-start:4px}
+.head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:10px;margin-top:14px}
+.tile{border-radius:12px;padding:10px 12px;background:var(--idlebg);cursor:pointer;border:2px solid transparent;text-align:right;font:inherit;color:var(--ink)}
+.tile b{display:block;font-size:1.6rem;line-height:1.2;font-variant-numeric:tabular-nums}
+.tile span{font-size:.8rem;color:var(--mute)}
+.tile[aria-pressed="true"]{border-color:var(--in)}
+.tile.ok{background:var(--okbg)}.tile.warn{background:var(--warnbg)}.tile.bad{background:var(--errbg)}
+.list{display:grid;gap:10px;margin-top:14px}
+.emp{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.emp .who b{display:block}
+.emp .who small{color:var(--mute)}
+.times{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.extra{grid-column:1/-1;font-size:.85rem;color:var(--mute);display:flex;gap:12px;flex-wrap:wrap}
+.extra a{color:var(--in)}
+.pill{display:inline-flex;align-items:center;gap:4px;padding:2px 10px;border-radius:999px;font-size:.82rem;font-weight:600;white-space:nowrap;background:var(--idlebg);color:var(--idle);font-variant-numeric:tabular-nums}
+.pill.ok{background:var(--okbg);color:var(--ok)}.pill.warn{background:var(--warnbg);color:var(--warn)}.pill.bad{background:var(--errbg);color:var(--err)}
+.req{padding:14px;border:1px solid var(--line);border-radius:12px;background:var(--card);display:grid;gap:6px}
+.req .row{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:4px 14px;font-size:.88rem}
+.kv span{color:var(--mute)}
+.decide{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:6px}
+.decide input{flex:1 1 200px;margin:0}
+.empty{text-align:center;color:var(--mute);padding:26px 10px}
+@media (max-width:520px){.emp{grid-template-columns:1fr}.times{justify-content:flex-start}}
+</style>
+</head>
+<body>
+<main>
+  <div class="top">
+    <img class="logo" src="logo.png" alt="KKETCO">
+    <div class="co">شركة خيرات الخليج للفحوصات الهندسية ذ.م.م<small>لوحة المدراء والـ HR</small></div>
+    <button class="btn ghost small hide" id="logout" type="button">خروج</button>
+  </div>
+
+  <section class="card" id="login">
+    <h2>دخول المدراء</h2>
+    <p class="mute">ادخل باسمك وكودك نفسه اللي تسجّل بيه الحضور. اللوحة تفتح فقط للأسماء المكتوبة بالإعدادات تحت «مدراء التطبيق».</p>
+    <form id="loginForm">
+      <label for="who">اسمك</label>
+      <select id="who" required><option value="">-- اختار اسمك --</option></select>
+      <label for="code">الكود الخاص بك</label>
+      <input id="code" type="password" inputmode="numeric" autocomplete="current-password" required>
+      <div style="margin-top:14px"><button class="btn" id="go" type="submit">دخول</button></div>
+    </form>
+    <div class="msg" id="loginMsg"></div>
+  </section>
+
+  <div id="panel" class="hide">
+    <div class="tabs" role="tablist">
+      <button role="tab" id="tToday" aria-selected="true" type="button">دوام اليوم</button>
+      <button role="tab" id="tLeaves" aria-selected="false" type="button">طلبات الإجازة <span class="badge hide" id="lvBadge"></span></button>
+      <a class="btn ghost small" id="sheetLink" target="_blank" rel="noopener" style="text-decoration:none;margin-inline-start:auto">فتح الشيت</a>
+    </div>
+
+    <section class="card" id="vToday">
+      <div class="head">
+        <div><h2 id="dayTitle">دوام اليوم</h2><div class="mute" id="dayNote"></div></div>
+        <button class="btn ghost small" id="refresh" type="button">تحديث</button>
+      </div>
+      <div class="tiles" id="tiles"></div>
+      <div class="list" id="emps"><div class="empty">جاري التحميل…</div></div>
+    </section>
+
+    <section class="card hide" id="vLeaves">
+      <div class="head"><div><h2>طلبات الإجازة</h2><div class="mute">الطلبات اللي تنتظر قرار الـ HR تطلع أولاً. القرار يحدّث الشيت والفورمة ويبعث إيميل للموظف والبديل.</div></div>
+        <button class="btn ghost small" id="refresh2" type="button">تحديث</button></div>
+      <div class="msg" id="lvMsg"></div>
+      <div class="list" id="reqs"><div class="empty">جاري التحميل…</div></div>
+    </section>
+  </div>
+</main>
+
+<script src="config.js"></script>
+<script src="bridge.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var store = { get: function (s, k) { try { return s.getItem(k) || ''; } catch (e) { return ''; } }, put: function (s, k, v) { try { v ? s.setItem(k, v) : s.removeItem(k); } catch (e) {} } };
+  var me = null, cred = null, day = null, leaves = null, filter = 'all', timer = null;
+
+  // ---------- دخول ----------
+  kkCall('getStaff').then(function (list) {
+    var saved = store.get(localStorage, 'kk_admin');
+    $('who').innerHTML = '<option value="">-- اختار اسمك --</option>' + list.map(function (s) { return '<option' + (s.name === saved ? ' selected' : '') + '>' + esc(s.name) + '</option>'; }).join('');
+    var code = store.get(sessionStorage, 'kk_admin_code');
+    if (saved && code) login(saved, code, true);
+  }).catch(function () { say('loginMsg', 'ما قدرت أتصل. تأكد من الإنترنت.', 'bad'); });
+
+  $('loginForm').onsubmit = function (e) { e.preventDefault(); login($('who').value, $('code').value.trim()); };
+  function login(name, code, quiet) {
+    $('go').disabled = true;
+    kkCall('adminLogin', name, code).then(function (r) {
+      me = r; cred = { name: name, code: code };
+      store.put(localStorage, 'kk_admin', name); store.put(sessionStorage, 'kk_admin_code', code);
+      $('login').classList.add('hide'); $('panel').classList.remove('hide'); $('logout').classList.remove('hide');
+      loadToday(); loadLeaves();
+      clearInterval(timer); timer = setInterval(function () { if (!document.hidden) loadToday(true); }, 60000);
+    }).catch(function (e) {
+      store.put(sessionStorage, 'kk_admin_code', '');
+      if (!quiet) say('loginMsg', esc(e.message || 'ما قدرت أتصل.'), 'bad');
+    }).then(function () { $('go').disabled = false; });
+  }
+  $('logout').onclick = function () { store.put(sessionStorage, 'kk_admin_code', ''); location.reload(); };
+  function say(id, html, cls) { var m = $(id); m.innerHTML = html; m.className = 'msg ' + (cls || ''); }
+
+  // ---------- التبويبات ----------
+  function tab(t) {
+    $('tToday').setAttribute('aria-selected', t === 'today'); $('tLeaves').setAttribute('aria-selected', t === 'leaves');
+    $('vToday').classList.toggle('hide', t !== 'today'); $('vLeaves').classList.toggle('hide', t !== 'leaves');
+  }
+  $('tToday').onclick = function () { tab('today'); };
+  $('tLeaves').onclick = function () { tab('leaves'); };
+  $('refresh').onclick = function () { loadToday(); };
+  $('refresh2').onclick = function () { loadLeaves(); };
+
+  // ---------- دوام اليوم ----------
+  function loadToday(quiet) {
+    if (!quiet) $('refresh').disabled = true;
+    kkCall('adminToday', cred.name, cred.code).then(function (r) { day = r; drawToday(); })
+      .catch(function (e) { if (!quiet) $('emps').innerHTML = '<div class="empty">' + esc(e.message || 'ما قدرت أتصل.') + '</div>'; })
+      .then(function () { $('refresh').disabled = false; });
+  }
+  function state(x) {
+    if (x.leave && !x.in) return 'leave';
+    if (!x.in) return 'none';
+    if (x.inLvl === 'bad') return 'late';
+    return 'in';
+  }
+  var GROUPS = [['all', 'موظف فعّال', ''], ['in', 'حضروا بالوقت', 'ok'], ['late', 'متأخرين', 'warn'], ['none', 'لم يسجّلوا', 'bad'], ['leave', 'بإجازة', ''], ['out', 'انصرفوا', '']];
+  function drawToday() {
+    var r = day;
+    $('sheetLink').href = r.sheet;
+    $('dayTitle').textContent = 'دوام اليوم: ' + r.day + ' ' + r.iso;
+    $('dayNote').textContent = (r.off ? 'اليوم ' + r.off + '. ' : '') + 'آخر تحديث ' + r.now + '. الحضور الأخضر لحد 9:15، والتأخير بعد 9:30.';
+    var n = { all: r.rows.length, in: 0, late: 0, none: 0, leave: 0, out: 0 };
+    r.rows.forEach(function (x) { n[state(x)]++; if (x.out) n.out++; });
+    $('tiles').innerHTML = GROUPS.map(function (g) {
+      var cls = g[2] && n[g[0]] ? g[2] : '';
+      return '<button class="tile ' + cls + '" type="button" data-f="' + g[0] + '" aria-pressed="' + (filter === g[0]) + '"><b>' + n[g[0]] + '</b><span>' + g[1] + '</span></button>';
+    }).join('');
+    var rows = r.rows.filter(function (x) { return filter === 'all' || (filter === 'out' ? !!x.out : state(x) === filter); });
+    var order = { none: 0, late: 1, in: 2, leave: 3 };
+    rows.sort(function (a, b) { return order[state(a)] - order[state(b)]; });
+    $('emps').innerHTML = rows.length ? rows.map(function (x) {
+      var s = state(x), t = '';
+      if (x.in) t += '<span class="pill ' + (x.inLvl || '') + '">حضور ' + esc(x.in.time) + '</span>';
+      else t += s === 'leave' ? '<span class="pill">إجازة</span>' : '<span class="pill ' + (r.off ? '' : 'bad') + '">' + (r.off ? 'عطلة' : 'لم يسجّل') + '</span>';
+      if (x.out) t += '<span class="pill ' + (x.outLvl || '') + '">انصراف ' + esc(x.out.time) + '</span>';
+      var ex = [];
+      if (x.in && x.in.st) ex.push(esc(x.in.st) + (x.in.dist ? ' (' + esc(x.in.dist) + ' م)' : ''));
+      if (x.in && x.in.reason) ex.push('سبب التأخير: ' + esc(x.in.reason));
+      if (x.hours) ex.push('ساعات العمل: ' + esc(x.hours));
+      if (x.in && x.in.map) ex.push('<a href="' + esc(x.in.map) + '" target="_blank" rel="noopener">الموقع على الخريطة</a>');
+      if (x.in && x.in.selfie) ex.push('<a href="' + esc(x.in.selfie) + '" target="_blank" rel="noopener">سيلفي الحضور</a>');
+      if (x.out && x.out.selfie) ex.push('<a href="' + esc(x.out.selfie) + '" target="_blank" rel="noopener">سيلفي الانصراف</a>');
+      return '<div class="emp"><div class="who"><b>' + esc(x.name) + '</b><small>' + esc(x.role) + (x.empId ? ' · ' + esc(x.empId) : '') + '</small></div><div class="times">' + t + '</div>' +
+        (ex.length ? '<div class="extra">' + ex.join('<span aria-hidden="true">·</span>') + '</div>' : '') + '</div>';
+    }).join('') : '<div class="empty">ما أكو أحد بهذي الخانة.</div>';
+    var p = r.pending.hr;
+    $('lvBadge').textContent = p; $('lvBadge').classList.toggle('hide', !p);
+  }
+  $('tiles').onclick = function (e) { var b = e.target.closest('[data-f]'); if (!b) return; filter = filter === b.dataset.f ? 'all' : b.dataset.f; drawToday(); };
+
+  // ---------- طلبات الإجازة ----------
+  function loadLeaves() {
+    kkCall('adminLeaves', cred.name, cred.code).then(function (r) { leaves = r; drawLeaves(); })
+      .catch(function (e) { $('reqs').innerHTML = '<div class="empty">' + esc(e.message || 'ما قدرت أتصل.') + '</div>'; });
+  }
+  function lvl(st, S) { return st === S.ok ? 'ok' : (st === S.no || st === S.subNo) ? 'bad' : st === S.hr ? 'warn' : ''; }
+  function drawLeaves() {
+    var S = leaves.states || {}, list = leaves.list.slice();
+    list.sort(function (a, b) { return (a.status === S.hr ? 0 : 1) - (b.status === S.hr ? 0 : 1); });
+    var p = list.filter(function (x) { return x.status === S.hr; }).length;
+    $('lvBadge').textContent = p; $('lvBadge').classList.toggle('hide', !p);
+    $('reqs').innerHTML = list.length ? list.map(function (x) {
+      var kv = [['النوع', x.type], ['الفترة', 'من ' + x.from + ' إلى ' + x.to + ' (' + x.days + ' يوم دوام)'], ['البديل', x.sub + (x.subSt ? ' · ' + x.subSt : '')],
+        ['السبب', x.reason], ['الاتصال أثناء الإجازة', x.contact], ['الرصيد المتبقي', x.remain], ['موقع العمل', x.site], ['قرار بواسطة', x.recBy], ['ملاحظات HR', x.notes]]
+        .filter(function (k) { return k[1]; }).map(function (k) { return '<div><span>' + k[0] + ':</span> ' + esc(k[1]) + '</div>'; }).join('');
+      return '<div class="req"><div class="row"><div><b>' + esc(x.name) + '</b> <span class="mute">' + esc(x.id) + ' · ' + esc(x.date) + '</span></div><span class="pill ' + lvl(x.status, S) + '">' + esc(x.status) + '</span></div>' +
+        '<div class="kv">' + kv + '</div>' +
+        (x.pdf ? '<div><a href="' + esc(x.pdf) + '" target="_blank" rel="noopener">فتح فورمة الإجازة</a></div>' : '') +
+        (x.status === S.hr ? '<div class="decide"><input placeholder="ملاحظة للموظف (اختياري)" data-note="' + esc(x.id) + '" aria-label="ملاحظة">' +
+          '<button class="btn small" type="button" data-dec="1" data-id="' + esc(x.id) + '">موافقة</button>' +
+          '<button class="btn small red" type="button" data-dec="0" data-id="' + esc(x.id) + '">رفض</button></div>' : '') + '</div>';
+    }).join('') : '<div class="empty">ما أكو طلبات إجازة بعد.</div>';
+  }
+  $('reqs').onclick = function (e) {
+    var b = e.target.closest('[data-dec]'); if (!b) return;
+    var id = b.dataset.id, ok = b.dataset.dec === '1', box = b.parentNode;
+    if (!b.dataset.sure) { // تأكيد بضغطة ثانية
+      [].forEach.call(box.querySelectorAll('[data-dec]'), function (x) { delete x.dataset.sure; x.textContent = x.dataset.dec === '1' ? 'موافقة' : 'رفض'; });
+      b.dataset.sure = '1'; b.textContent = ok ? 'أكيد؟ اضغط للموافقة' : 'أكيد؟ اضغط للرفض'; return;
+    }
+    var note = (box.querySelector('[data-note]') || {}).value || '';
+    [].forEach.call(box.querySelectorAll('button'), function (x) { x.disabled = true; });
+    b.textContent = 'جاري الحفظ…';
+    kkCall('adminDecide', cred.name, cred.code, id, ok, note).then(function (r) { say('lvMsg', esc(r.msg), r.ok ? 'ok' : 'bad'); loadLeaves(); loadToday(true); })
+      .catch(function (e) { say('lvMsg', esc(e.message || 'ما قدرت أتصل.'), 'bad'); loadLeaves(); });
+  };
+})();
+</script>
+</body>
+</html>

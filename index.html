@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>حضور خيرات الخليج</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#1c5aa6">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="حضور KKETCO">
+<style>
+:root { --bg: #f3f8fc; --ink: #12233a; --mute: #566a80; --in: #1c5aa6; }
+@media (prefers-color-scheme: dark) { :root { --bg: #0c1624; --ink: #eaf2fa; --mute: #9db3c8; --in: #5bbbed; } }
+body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: var(--bg); color: var(--ink); font-family: "IBM Plex Sans Arabic", Tahoma, Arial, sans-serif; }
+.splash { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 24px; text-align: center; }
+.splash img { width: 96px; height: 96px; border-radius: 22px; }
+.splash p { margin: 0; color: var(--mute); }
+.splash button { font: inherit; font-weight: 700; border: 0; border-radius: 10px; padding: 10px 20px; background: var(--in); color: #fff; cursor: pointer; }
+</style>
+</head>
+<body>
+<div class="splash" id="splash">
+  <img src="icon-192.png" alt="">
+  <b>حضور خيرات الخليج</b>
+  <p id="state">جاري فتح التطبيق…</p>
+</div>
+<script src="config.js"></script>
+<script>
+// يجيب الواجهة من Apps Script ويشغّلها هنا (بدون شريط Google ومع أيقونة التطبيق)
+(function () {
+  var KEY = 'kk_ui', API = window.KK_API;
+  var HEAD = '<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#1c5aa6">' +
+    '<link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">' +
+    '<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="حضور KKETCO">' +
+    '<script src="config.js"><\/script><script src="bridge.js"><\/script>';
+  function get() { try { return localStorage.getItem(KEY) || ''; } catch (e) { return ''; } }
+  function put(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
+  function boot(html) {
+    html = html.replace(/<base[^>]*>/i, '').replace(/<head[^>]*>/i, function (m) { return m + HEAD; });
+    document.open(); document.write(html); document.close();
+  }
+  function fail() {
+    document.getElementById('state').innerHTML = 'ما قدرت أتصل. تأكد من الإنترنت.<br><br><button onclick="location.reload()">حاول مرة ثانية</button>';
+  }
+  var cached = get();
+  fetch(API + '?view=ui').then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
+    .then(function (html) {
+      if (html.indexOf('<html') < 0) throw new Error('bad');
+      put(html);
+      if (!booted) boot(html);
+    })
+    .catch(function () { if (!booted) fail(); });
+  // إذا الواجهة محفوظة من قبل، افتحها فوراً والنسخة الجديدة تنحفظ للمرة الجاية
+  var booted = false;
+  if (cached) { booted = true; boot(cached); }
+})();
+</script>
+</body>
+</html>
